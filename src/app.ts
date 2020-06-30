@@ -21,6 +21,10 @@ type Numeric = number | boolean;
 
 type Universal = Combinable & Numeric;
 
+function add(a: number, b: number): number; //overload
+function add(a: string, b: string): string; //overload
+function add(a: number, b: string): string; //overload
+function add(a: string, b: number): string; //overload
 function add(a: Combinable, b: Combinable) {
   if (typeof a === "string" || typeof b === "string") {
     return a.toString() + b.toString();
@@ -28,80 +32,119 @@ function add(a: Combinable, b: Combinable) {
   return a + b;
 }
 
-type UnknownEmployee = Employee | Admin;
+const result = add(1, " Lazarevic"); //here it recognizes overload
+result.split(" ");
 
-function printEmployeeInfo(emp: UnknownEmployee) {
-  console.log("Name: " + emp.name);
-  if ("privileges" in emp) {
-    console.log("Privileges: " + emp.privileges);
-  }
-  if ("startDate" in emp) {
-    console.log("Start Date: " + emp.startDate);
-  }
-}
+// uncertanty when fetched
+const fetchedUserData = {
+  id: "u1",
+  name: "Zox",
+  job: { title: "Frontend developer", description: "UI and UX developer" },
+};
 
-printEmployeeInfo({ name: "manu", startDate: new Date() });
+console.log(fetchedUserData?.job?.title); // optional chaining
 
-class Car {
-  drive() {
-    console.log("Driving a car...");
-  }
-}
+// nullish coalescing 
 
-class Truck {
-  drive() {
-    console.log("Driving a truck...");
-  }
-  loadCargo(amount: number) {
-    console.log("Loading cargo " + amount);
-  }
-}
+const userInput = undefined;
 
-type Vehicle = Car | Truck;
+const storedData = userInput ?? 'DEFAULT'; // ?? - optional chaining operator
 
-const v1 = new Car();
-const t1 = new Truck();
+console.log(storedData);
 
-function useVehicle(vehicle: Vehicle) {
-  vehicle.drive();
-  //   if ("loadCargo" in vehicle) {
-  //     vehicle.loadCargo(1000);
-  //   }
-  if (vehicle instanceof Truck) {
-    vehicle.loadCargo(1000);
-  }
-}
 
-useVehicle(v1);
-useVehicle(t1);
+// type UnknownEmployee = Employee | Admin;
 
-// discriminated unions work mostly with object types
+// function printEmployeeInfo(emp: UnknownEmployee) {
+//   console.log("Name: " + emp.name);
+//   if ("privileges" in emp) {
+//     console.log("Privileges: " + emp.privileges);
+//   }
+//   if ("startDate" in emp) {
+//     console.log("Start Date: " + emp.startDate);
+//   }
+// }
 
-interface Bird {
-  type: "bird";
-  flyingSpeed: number;
-}
+// printEmployeeInfo({ name: "manu", startDate: new Date() });
 
-interface Horse {
-  type: "horse";
-  runningSpeed: number;
-}
+// class Car {
+//   drive() {
+//     console.log("Driving a car...");
+//   }
+// }
 
-type Animal = Bird | Horse;
+// class Truck {
+//   drive() {
+//     console.log("Driving a truck...");
+//   }
+//   loadCargo(amount: number) {
+//     console.log("Loading cargo " + amount);
+//   }
+// }
 
-function moveAnimal(animal: Animal) {
-  //   if ("flyingSpeed" in animal) {
-  //     console.log("Moving with speed " + animal.flyingSpeed);
-  //   }
-  let speed;
-  switch (animal.type) {
-    case "bird":
-      speed = animal.flyingSpeed;
-      break;
-    case "horse":
-      speed = animal.runningSpeed;
-  }
-  console.log("moving at speed: " + speed);
-}
+// type Vehicle = Car | Truck;
 
-moveAnimal({type: "bird", flyingSpeed: 200})
+// const v1 = new Car();
+// const t1 = new Truck();
+
+// function useVehicle(vehicle: Vehicle) {
+//   vehicle.drive();
+//   //   if ("loadCargo" in vehicle) {
+//   //     vehicle.loadCargo(1000);
+//   //   }
+//   if (vehicle instanceof Truck) {
+//     vehicle.loadCargo(1000);
+//   }
+// }
+
+// useVehicle(v1);
+// useVehicle(t1);
+
+// // discriminated unions work mostly with object types
+
+// interface Bird {
+//   type: "bird";
+//   flyingSpeed: number;
+// }
+
+// interface Horse {
+//   type: "horse";
+//   runningSpeed: number;
+// }
+
+// type Animal = Bird | Horse;
+
+// function moveAnimal(animal: Animal) {
+//   //   if ("flyingSpeed" in animal) {
+//   //     console.log("Moving with speed " + animal.flyingSpeed);
+//   //   }
+//   let speed;
+//   switch (animal.type) {
+//     case "bird":
+//       speed = animal.flyingSpeed;
+//       break;
+//     case "horse":
+//       speed = animal.runningSpeed;
+//   }
+//   console.log("moving at speed: " + speed);
+// }
+
+// moveAnimal({ type: "bird", flyingSpeed: 200 });
+
+// // const userInputElement = <HTMLInputElement>document.getElementById('user-input')!; //type casting
+// const userInputElement = document.getElementById("user-input"); //perfect for JSX
+// // ! - Will never be null
+
+// if (userInputElement) {
+//   (userInputElement as HTMLInputElement).value = "Hi there!";
+// }
+
+// interface ErrorContainer {
+//   //{email: "not a valid email", username: "username is incorrect"}
+//   [prop: string]: string;
+// }
+
+// const errorBag: ErrorContainer = {
+//     email: 'Not a valid email!',
+//     username: 'Must start with the capital character'
+// }
